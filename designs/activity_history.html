@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#fdfbfe",
+                        "surface-variant": "#242629",
+                        "on-secondary": "#5a5300",
+                        "surface-dim": "#0d0e10",
+                        "surface-bright": "#2b2c2f",
+                        "error-dim": "#d53d18",
+                        "on-secondary-fixed-variant": "#645d00",
+                        "on-primary-fixed-variant": "#596700",
+                        "secondary-fixed": "#f4e650",
+                        "outline": "#757578",
+                        "inverse-primary": "#586500",
+                        "secondary-fixed-dim": "#e5d843",
+                        "background": "#0d0e10",
+                        "secondary-container": "#676000",
+                        "on-tertiary-fixed-variant": "#675400",
+                        "on-primary-fixed": "#3f4900",
+                        "surface-container-high": "#1e2022",
+                        "on-primary-container": "#505d00",
+                        "on-error-container": "#ffd2c8",
+                        "on-tertiary": "#665300",
+                        "on-background": "#fdfbfe",
+                        "inverse-surface": "#faf9fb",
+                        "on-primary": "#586500",
+                        "on-secondary-container": "#fff8d5",
+                        "surface-container": "#181a1c",
+                        "tertiary-fixed-dim": "#eec930",
+                        "on-error": "#450900",
+                        "surface-container-low": "#121316",
+                        "surface": "#0d0e10",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed": "#daf900",
+                        "primary-container": "#daf900",
+                        "on-secondary-fixed": "#464000",
+                        "tertiary-fixed": "#fdd73e",
+                        "on-surface-variant": "#ababad",
+                        "primary-fixed-dim": "#cdea00",
+                        "on-tertiary-fixed": "#463900",
+                        "outline-variant": "#47484a",
+                        "inverse-on-surface": "#555557",
+                        "tertiary-dim": "#eec930",
+                        "surface-tint": "#f6ffc0",
+                        "secondary": "#f4e650",
+                        "primary": "#f6ffc0",
+                        "primary-dim": "#d0ed00",
+                        "tertiary-container": "#fdd73e",
+                        "tertiary": "#ffe798",
+                        "secondary-dim": "#e5d843",
+                        "error": "#ff7351",
+                        "error-container": "#b92902",
+                        "surface-container-highest": "#242629",
+                        "on-tertiary-container": "#5c4b00"
+                    },
+                    fontFamily: {
+                        "headline": ["Lexend"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0d0e10;
+            color: #fdfbfe;
+            font-family: 'Lexend', sans-serif;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #f6ffc0 0%, #daf900 100%);
+        }
+        .glass-nav {
+            background: rgba(18, 19, 22, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0e10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #242629;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0d0e10] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#f6ffc0]">directions_walk</span>
+<h1 class="text-2xl font-black text-[#f6ffc0] italic font-['Lexend'] font-extrabold tracking-tight">STRIDE</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20 hover:opacity-80 transition-opacity active:scale-95 duration-200 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close up" src="../assets/images/image_1c16d70a.jpg"/>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-5xl mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<div class="flex justify-between items-end mb-2">
+<h2 class="text-5xl font-extrabold tracking-tighter text-on-surface">WALK HISTORY</h2>
+<span class="text-primary font-bold text-sm tracking-widest uppercase">32 TOTAL SESSIONS</span>
+</div>
+<div class="h-1 w-24 kinetic-gradient rounded-full"></div>
+</section>
+<!-- Bento Grid Overview Trends -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="md:col-span-2 bg-surface-container-low p-6 rounded-xl relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-1">Weekly Volume</p>
+<h3 class="text-4xl font-extrabold text-primary mb-4 tracking-tight">42.8 KM</h3>
+<!-- Simplified Trend Chart (CSS) -->
+<div class="flex items-end gap-2 h-24">
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[40%] group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[60%] group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[35%] group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[85%] group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex-1 bg-primary rounded-t-sm h-[100%]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[55%] group-hover:bg-primary/20 transition-colors"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[70%] group-hover:bg-primary/20 transition-colors"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl flex flex-col justify-between border-l-4 border-secondary">
+<div>
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-1">Consistency</p>
+<h3 class="text-3xl font-extrabold text-on-surface">12 DAY STREAK</h3>
+</div>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="text-secondary text-sm font-bold">TOP 5% OF WALKERS</span>
+</div>
+</div>
+</div>
+<!-- Session Logs -->
+<div class="space-y-4">
+<!-- Entry 1 -->
+<div class="bg-surface-container-low rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-surface-container-high transition-colors duration-200">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex flex-col items-center justify-center text-on-surface">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-xl font-black">24</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-on-surface leading-tight">Morning Interval Sprint</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="bg-secondary-container/30 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">High Intensity</span>
+<span class="text-on-surface-variant text-xs">07:45 AM • 52 mins</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8 md:gap-12 text-center md:text-right">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Distance</p>
+<p class="text-xl font-black text-on-surface">6.4 <span class="text-xs font-medium text-on-surface-variant">KM</span></p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Steps</p>
+<p class="text-xl font-black text-on-surface">8,102</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Pace</p>
+<p class="text-xl font-black text-primary">8'12"</p>
+</div>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="bg-surface-container-low rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-surface-container-high transition-colors duration-200">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex flex-col items-center justify-center text-on-surface">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-xl font-black">23</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-on-surface leading-tight">Recovery Stroll</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">Steady State</span>
+<span class="text-on-surface-variant text-xs">06:12 PM • 30 mins</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8 md:gap-12 text-center md:text-right">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Distance</p>
+<p class="text-xl font-black text-on-surface">3.1 <span class="text-xs font-medium text-on-surface-variant">KM</span></p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Steps</p>
+<p class="text-xl font-black text-on-surface">4,290</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Pace</p>
+<p class="text-xl font-black text-primary">9'45"</p>
+</div>
+</div>
+</div>
+<!-- Entry 3 -->
+<div class="bg-surface-container-low rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-surface-container-high transition-colors duration-200">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex flex-col items-center justify-center text-on-surface">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-xl font-black">22</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-on-surface leading-tight">Power Walk Session</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="bg-secondary-container/30 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">Intervals</span>
+<span class="text-on-surface-variant text-xs">08:05 AM • 45 mins</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8 md:gap-12 text-center md:text-right">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Distance</p>
+<p class="text-xl font-black text-on-surface">5.8 <span class="text-xs font-medium text-on-surface-variant">KM</span></p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Steps</p>
+<p class="text-xl font-black text-on-surface">7,440</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Pace</p>
+<p class="text-xl font-black text-primary">7'55"</p>
+</div>
+</div>
+</div>
+<!-- Interval Pattern Visualization (Mid-list) -->
+<div class="bg-surface-container-high/40 rounded-xl p-6 border-l-2 border-primary/30">
+<div class="flex justify-between items-center mb-6">
+<h5 class="text-xs font-black uppercase tracking-[0.2em]">Interval Intensity Analysis</h5>
+<span class="text-xs text-on-surface-variant">Last 7 Sessions</span>
+</div>
+<div class="flex items-end gap-1.5 h-32">
+<div class="w-full bg-primary h-[80%] rounded-sm opacity-20"></div>
+<div class="w-full bg-primary h-[20%] rounded-sm"></div>
+<div class="w-full bg-primary h-[90%] rounded-sm opacity-30"></div>
+<div class="w-full bg-primary h-[15%] rounded-sm"></div>
+<div class="w-full bg-primary h-[75%] rounded-sm opacity-40"></div>
+<div class="w-full bg-primary h-[10%] rounded-sm"></div>
+<div class="w-full bg-primary h-[100%] rounded-sm opacity-50"></div>
+<div class="w-full bg-primary h-[25%] rounded-sm"></div>
+<div class="w-full bg-primary h-[85%] rounded-sm opacity-20"></div>
+<div class="w-full bg-primary h-[30%] rounded-sm"></div>
+<div class="w-full bg-primary h-[60%] rounded-sm opacity-40"></div>
+</div>
+<div class="flex justify-between mt-3 text-[9px] font-bold text-on-surface-variant uppercase tracking-widest">
+<span>WARMUP</span>
+<span>PEAK</span>
+<span>COOLDOWN</span>
+</div>
+</div>
+<!-- Entry 4 -->
+<div class="bg-surface-container-low rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-surface-container-high transition-colors duration-200">
+<div class="flex items-center gap-5">
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex flex-col items-center justify-center text-on-surface">
+<span class="text-xs font-bold uppercase">Oct</span>
+<span class="text-xl font-black">21</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-on-surface leading-tight">City Exploration</h4>
+<div class="flex items-center gap-3 mt-1">
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider">Endurance</span>
+<span class="text-on-surface-variant text-xs">11:20 AM • 120 mins</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8 md:gap-12 text-center md:text-right">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Distance</p>
+<p class="text-xl font-black text-on-surface">12.2 <span class="text-xs font-medium text-on-surface-variant">KM</span></p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Steps</p>
+<p class="text-xl font-black text-on-surface">15,600</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Pace</p>
+<p class="text-xl font-black text-primary">10'02"</p>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-8 w-full py-4 bg-surface-container-high text-on-surface font-bold text-sm tracking-widest uppercase rounded-lg hover:bg-surface-container-highest transition-colors active:scale-95 duration-150">
+            LOAD MORE SESSIONS
+        </button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#121316]/70 backdrop-blur-xl shadow-[0_-4px_24px_rgba(246,255,192,0.08)]">
+<a class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest">Walk</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#f6ffc0] bg-[#1e2022] rounded-lg px-3 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1">speed</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest">Music</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors active:scale-90 duration-150 group" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+</body></html>

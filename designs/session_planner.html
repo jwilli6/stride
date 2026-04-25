@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#fdfbfe",
+              "surface-variant": "#242629",
+              "on-secondary": "#5a5300",
+              "surface-dim": "#0d0e10",
+              "surface-bright": "#2b2c2f",
+              "error-dim": "#d53d18",
+              "on-secondary-fixed-variant": "#645d00",
+              "on-primary-fixed-variant": "#596700",
+              "secondary-fixed": "#f4e650",
+              "outline": "#757578",
+              "inverse-primary": "#586500",
+              "secondary-fixed-dim": "#e5d843",
+              "background": "#0d0e10",
+              "secondary-container": "#676000",
+              "on-tertiary-fixed-variant": "#675400",
+              "on-primary-fixed": "#3f4900",
+              "surface-container-high": "#1e2022",
+              "on-primary-container": "#505d00",
+              "on-error-container": "#ffd2c8",
+              "on-tertiary": "#665300",
+              "on-background": "#fdfbfe",
+              "inverse-surface": "#faf9fb",
+              "on-primary": "#586500",
+              "on-secondary-container": "#fff8d5",
+              "surface-container": "#181a1c",
+              "tertiary-fixed-dim": "#eec930",
+              "on-error": "#450900",
+              "surface-container-low": "#121316",
+              "surface": "#0d0e10",
+              "surface-container-lowest": "#000000",
+              "primary-fixed": "#daf900",
+              "primary-container": "#daf900",
+              "on-secondary-fixed": "#464000",
+              "tertiary-fixed": "#fdd73e",
+              "on-surface-variant": "#ababad",
+              "primary-fixed-dim": "#cdea00",
+              "on-tertiary-fixed": "#463900",
+              "outline-variant": "#47484a",
+              "inverse-on-surface": "#555557",
+              "tertiary-dim": "#eec930",
+              "surface-tint": "#f6ffc0",
+              "secondary": "#f4e650",
+              "primary": "#f6ffc0",
+              "primary-dim": "#d0ed00",
+              "tertiary-container": "#fdd73e",
+              "tertiary": "#ffe798",
+              "secondary-dim": "#e5d843",
+              "error": "#ff7351",
+              "error-container": "#b92902",
+              "surface-container-highest": "#242629",
+              "on-tertiary-container": "#5c4b00"
+            },
+            fontFamily: {
+              "headline": ["Lexend"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 2px;
+            background: #f6ffc0;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(246, 255, 192, 0.4);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #242629;
+            height: 4px;
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#0d0e10] dark:bg-[#0d0e10] flex justify-between items-center px-6 py-4 w-full sticky top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#f6ffc0] active:scale-95 duration-200 cursor-pointer" data-icon="directions_walk">directions_walk</span>
+<h1 class="font-['Lexend'] font-extrabold tracking-tight text-2xl italic text-[#f6ffc0]">STRIDE</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden active:scale-95 duration-200 transition-opacity hover:opacity-80">
+<img alt="User Profile" data-alt="User profile avatar icon in minimalist style" src="../assets/images/image_9cb59965.jpg"/>
+</div>
+</header>
+<main class="px-6 pt-8 max-w-2xl mx-auto space-y-12">
+<!-- Editorial Hero Section -->
+<section class="space-y-2">
+<p class="text-primary font-extrabold tracking-widest text-xs uppercase">Precision Training</p>
+<h2 class="text-5xl font-extrabold tracking-tighter leading-none">INTERVAL<br/><span class="text-on-surface-variant italic">PLANNER</span></h2>
+</section>
+<!-- Visual Timeline (Bento Style) -->
+<section class="grid grid-cols-12 gap-1">
+<div class="col-span-12 mb-4 flex justify-between items-end">
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Planned Session Timeline</span>
+<span class="text-2xl font-black text-primary italic">45:00</span>
+</div>
+<!-- Kinetic Progress Visualization -->
+<div class="col-span-2 h-16 bg-surface-container-high rounded-l-lg flex items-center justify-center border-r border-background" title="Warmup">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="bolt">bolt</span>
+</div>
+<div class="col-span-3 h-16 bg-primary-container/20 flex items-center justify-center border-r border-background" title="Moderate">
+<div class="w-full h-1 bg-primary/40 mx-2"></div>
+</div>
+<div class="col-span-2 h-16 bg-primary flex items-center justify-center border-r border-background shadow-[0_0_20px_rgba(246,255,192,0.2)]" title="Fast Burst">
+<div class="w-full h-3 bg-on-primary mx-2 rounded-sm"></div>
+</div>
+<div class="col-span-3 h-16 bg-primary-container/20 flex items-center justify-center border-r border-background" title="Moderate">
+<div class="w-full h-1 bg-primary/40 mx-2"></div>
+</div>
+<div class="col-span-2 h-16 bg-surface-container-high rounded-r-lg flex items-center justify-center" title="Cooldown">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="ac_unit">ac_unit</span>
+</div>
+</section>
+<!-- Controls Section -->
+<div class="space-y-10">
+<!-- Moderate Interval Slider -->
+<div class="space-y-6">
+<div class="flex justify-between items-baseline">
+<label class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Moderate Pace</label>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black italic">04:00</span>
+<span class="text-xs font-bold text-on-surface-variant">MIN</span>
+</div>
+</div>
+<input class="w-full" max="15" min="1" type="range" value="4"/>
+<div class="flex justify-between text-[10px] font-bold text-outline uppercase">
+<span>Endurance Base</span>
+<span>Steady Aerobic</span>
+</div>
+</div>
+<!-- Fast Interval Slider -->
+<div class="space-y-6">
+<div class="flex justify-between items-baseline">
+<label class="text-sm font-bold uppercase tracking-widest text-primary">Fast Burst</label>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black italic text-primary">02:00</span>
+<span class="text-xs font-bold text-on-surface-variant">MIN</span>
+</div>
+</div>
+<input class="w-full" max="5" min="0.5" step="0.5" type="range" value="2"/>
+<div class="flex justify-between text-[10px] font-bold text-outline uppercase">
+<span>High Intensity</span>
+<span>Peak Power</span>
+</div>
+</div>
+<!-- Repeat Cycles -->
+<div class="bg-surface-container-low p-6 rounded-xl flex items-center justify-between">
+<div class="space-y-1">
+<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Interval Cycles</p>
+<p class="text-lg font-bold">Repeat Sequence</p>
+</div>
+<div class="flex items-center gap-6">
+<button class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-on-surface" data-icon="remove">remove</span>
+</button>
+<span class="text-3xl font-black italic">x6</span>
+<button class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Grid -->
+<div class="grid grid-cols-2 gap-4">
+<button class="py-5 bg-surface-container-highest text-primary font-bold uppercase tracking-widest rounded-xl hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm" data-icon="bookmark">bookmark</span>
+                Save Preset
+            </button>
+<button class="py-5 bg-primary text-on-primary font-black uppercase tracking-widest rounded-xl shadow-[0_4px_24px_rgba(246,255,192,0.15)] active:scale-95 duration-150 flex items-center justify-center gap-2">
+                Start Walk
+                <span class="material-symbols-outlined" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#121316]/70 backdrop-blur-xl shadow-[0_-4px_24px_rgba(246,255,192,0.08)]">
+<div class="flex flex-col items-center justify-center text-[#f6ffc0] bg-[#1e2022] rounded-lg px-3 py-1 duration-150 active:scale-90">
+<span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest mt-1">Walk</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors duration-150 active:scale-90">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest mt-1">History</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors duration-150 active:scale-90">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest mt-1">Music</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ababad] opacity-60 hover:text-[#f6ffc0] transition-colors duration-150 active:scale-90">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Lexend'] font-medium text-[10px] uppercase tracking-widest mt-1">Settings</span>
+</div>
+</nav>
+</body></html>
