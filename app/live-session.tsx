@@ -1,3 +1,4 @@
+import BackgroundAudioManager from "@/components/BackgroundAudioManager";
 import { useWorkout } from "@/context/WorkoutContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
@@ -42,6 +43,8 @@ export default function LiveSessionScreen() {
     setMusicIsPlaying,
     setCurrentTrackIndex,
     addSession,
+    isWorkoutActive,
+    setIsWorkoutActive,
   } = useWorkout();
 
   const phases = useMemo(() => {
@@ -109,15 +112,18 @@ export default function LiveSessionScreen() {
 
   const lastAnnouncedTime = useRef<number | null>(null);
 
-  // Sync music to workout play/pause
+  // Sync music to workout play/pause and manage background audio
   useEffect(() => {
     setMusicIsPlaying(isRunning);
+    // Keep background audio active even when paused to maintain app awake state
+    // Only deactivate when workout is completely finished
   }, [isRunning]);
 
-  // Cleanup music and speech on unmount
+  // Cleanup music, speech, and background audio on unmount
   useEffect(() => {
     return () => {
       setMusicIsPlaying(false);
+      setIsWorkoutActive(false); // Deactivate background audio
       Speech.stop();
     };
   }, []);
@@ -173,11 +179,12 @@ export default function LiveSessionScreen() {
     lastAnnouncedTime.current = seconds;
   };
 
-  // Initial Announcement
+  // Initial Announcement and activate background audio
   useEffect(() => {
     if (phases.length > 0 && currentPhaseIndex === 0 && totalElapsed === 0) {
       announceInterval(phases[0]);
       setCurrentTrackIndex(0);
+      setIsWorkoutActive(true); // Activate background audio to prevent sleeping
     }
   }, []);
 
@@ -198,7 +205,8 @@ export default function LiveSessionScreen() {
             return currentPhases[nextIndex].duration;
           } else {
             setCurrentPhaseIndex(nextIndex);
-            // Finished
+            // Finished - deactivate background audio
+            setIsWorkoutActive(false);
             speak("Workout complete. Incredible effort today.");
             setTotalElapsed((currentElapsed) => {
               addSession({
@@ -265,6 +273,9 @@ export default function LiveSessionScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
+      {/* Background Audio Manager - Keeps app awake during workout */}
+      <BackgroundAudioManager isActive={isWorkoutActive} />
+
       {/* Top Header */}
       <View className="px-6 py-6 flex-row justify-between items-center w-full z-10">
         <Text className="text-primary font-lexendExtraBold uppercase tracking-widest text-[10px]">

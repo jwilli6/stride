@@ -269,11 +269,12 @@ export default function AudioPlayer() {
         isLoadingRef.current = false;
 
         // Handle any pending track change that was queued during loading
-        if (pendingTrackRef.current && isMounted) {
-          const pending = pendingTrackRef.current;
+        const pending = pendingTrackRef.current;
+        if (pending && isMounted) {
+          const { trackIndex: pendingTrack, theme: pendingTheme } = pending;
           if (
-            pending.trackIndex !== currentTrackIndex ||
-            pending.theme !== musicTheme
+            pendingTrack !== currentTrackIndex ||
+            pendingTheme !== musicTheme
           ) {
             // Recursively load the pending track
             setTimeout(() => loadSound(), 10);

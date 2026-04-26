@@ -1,3 +1,4 @@
+import BackgroundAudioManager from "@/components/BackgroundAudioManager";
 import { useWorkout } from "@/context/WorkoutContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
@@ -25,6 +26,8 @@ export default function WalkScreen() {
     setModerateBPM,
     fastBPM,
     setFastBPM,
+    setIsWorkoutActive,
+    isWorkoutActive,
   } = useWorkout();
 
   const totalTime = getTotalTime();
@@ -37,6 +40,9 @@ export default function WalkScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
+      {/* Background Audio Manager - Only active during workouts */}
+      <BackgroundAudioManager isActive={isWorkoutActive} />
+
       <ScrollView
         className="flex-1 px-6 pt-12 pb-32"
         showsVerticalScrollIndicator={false}
@@ -84,24 +90,37 @@ export default function WalkScreen() {
             </View>
             <Slider
               style={{ width: "100%", height: 40, marginBottom: 8 }}
-              minimumValue={0} maximumValue={15} step={0.5}
-              value={warmUp} onSlidingComplete={setWarmUp}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={0}
+              maximumValue={15}
+              step={0.5}
+              value={warmUp}
+              onSlidingComplete={setWarmUp}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
-            
+
             <View className="flex-row justify-between items-center mb-2 mt-2">
               <Text className="text-[10px] font-lexendBold uppercase tracking-[0.2em] text-on-surface-variant">
                 Target Cadence
               </Text>
               <Text className="text-lg font-lexendBlack italic text-on-surface">
-                {warmupBPM} <Text className="text-[10px] uppercase not-italic text-on-surface-variant">BPM</Text>
+                {warmupBPM}{" "}
+                <Text className="text-[10px] uppercase not-italic text-on-surface-variant">
+                  BPM
+                </Text>
               </Text>
             </View>
             <Slider
               style={{ width: "100%", height: 40 }}
-              minimumValue={80} maximumValue={120} step={1}
-              value={warmupBPM} onSlidingComplete={setWarmupBPM}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={80}
+              maximumValue={120}
+              step={1}
+              value={warmupBPM}
+              onSlidingComplete={setWarmupBPM}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
           </View>
 
@@ -118,9 +137,14 @@ export default function WalkScreen() {
             </View>
             <Slider
               style={{ width: "100%", height: 40, marginBottom: 8 }}
-              minimumValue={1} maximumValue={15} step={0.5}
-              value={moderatePace} onSlidingComplete={setModeratePace}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={1}
+              maximumValue={15}
+              step={0.5}
+              value={moderatePace}
+              onSlidingComplete={setModeratePace}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
 
             <View className="flex-row justify-between items-center mb-2 mt-2">
@@ -128,14 +152,22 @@ export default function WalkScreen() {
                 Target Cadence
               </Text>
               <Text className="text-lg font-lexendBlack italic text-on-surface">
-                {moderateBPM} <Text className="text-[10px] uppercase not-italic text-on-surface-variant">BPM</Text>
+                {moderateBPM}{" "}
+                <Text className="text-[10px] uppercase not-italic text-on-surface-variant">
+                  BPM
+                </Text>
               </Text>
             </View>
             <Slider
               style={{ width: "100%", height: 40 }}
-              minimumValue={110} maximumValue={140} step={1}
-              value={moderateBPM} onSlidingComplete={setModerateBPM}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={110}
+              maximumValue={140}
+              step={1}
+              value={moderateBPM}
+              onSlidingComplete={setModerateBPM}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
           </View>
 
@@ -152,9 +184,14 @@ export default function WalkScreen() {
             </View>
             <Slider
               style={{ width: "100%", height: 40, marginBottom: 8 }}
-              minimumValue={0.5} maximumValue={5} step={0.5}
-              value={fastBurst} onSlidingComplete={setFastBurst}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={0.5}
+              maximumValue={5}
+              step={0.5}
+              value={fastBurst}
+              onSlidingComplete={setFastBurst}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
 
             <View className="flex-row justify-between items-center mb-2 mt-2">
@@ -162,14 +199,22 @@ export default function WalkScreen() {
                 Target Cadence
               </Text>
               <Text className="text-lg font-lexendBlack italic text-on-surface">
-                {fastBPM} <Text className="text-[10px] uppercase not-italic text-on-surface-variant">BPM</Text>
+                {fastBPM}{" "}
+                <Text className="text-[10px] uppercase not-italic text-on-surface-variant">
+                  BPM
+                </Text>
               </Text>
             </View>
             <Slider
               style={{ width: "100%", height: 40 }}
-              minimumValue={120} maximumValue={180} step={1}
-              value={fastBPM} onSlidingComplete={setFastBPM}
-              minimumTrackTintColor="#f6ffc0" maximumTrackTintColor="#242629" thumbTintColor="#f6ffc0"
+              minimumValue={120}
+              maximumValue={180}
+              step={1}
+              value={fastBPM}
+              onSlidingComplete={setFastBPM}
+              minimumTrackTintColor="#f6ffc0"
+              maximumTrackTintColor="#242629"
+              thumbTintColor="#f6ffc0"
             />
           </View>
 
@@ -201,7 +246,10 @@ export default function WalkScreen() {
         {/* Start Walk Action Button */}
         <TouchableOpacity
           className="w-full py-5 bg-primary rounded-2xl flex-row items-center justify-center gap-2 shadow-[0_8px_30px_rgba(246,255,192,0.2)] active:opacity-80 mb-24"
-          onPress={() => router.push("/live-session")}
+          onPress={() => {
+            setIsWorkoutActive(true); // Start background audio immediately
+            router.push("/live-session");
+          }}
         >
           <Text className="text-on-primary font-lexendBlack uppercase tracking-widest text-sm">
             Start Walk

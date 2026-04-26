@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
 export interface WorkoutSession {
   id: string;
@@ -28,7 +28,7 @@ type WorkoutContextType = {
   setCoolDown: (val: number) => void;
   setCycles: (val: number) => void;
   getTotalTime: () => number;
-  
+
   // Settings
   warmupBPM: number;
   setWarmupBPM: (val: number) => void;
@@ -38,16 +38,18 @@ type WorkoutContextType = {
   setFastBPM: (val: number) => void;
   voiceVolume: number;
   setVoiceVolume: (val: number) => void;
-  voiceSelection: 'Aria' | 'Marcus' | 'Nova';
-  setVoiceSelection: (val: 'Aria' | 'Marcus' | 'Nova') => void;
-  hapticFeedback: 'Off' | 'Low' | 'High';
-  setHapticFeedback: (val: 'Off' | 'Low' | 'High') => void;
-  units: 'Metric (km)' | 'Imperial (mi)';
-  setUnits: (val: 'Metric (km)' | 'Imperial (mi)') => void;
-  theme: 'Kinetic Dark' | 'Onyx Black' | 'Pro Grey';
-  setTheme: (val: 'Kinetic Dark' | 'Onyx Black' | 'Pro Grey') => void;
-  musicTheme: 'Military Drill' | 'Neon Circuit' | 'Acoustic Trail';
-  setMusicTheme: (val: 'Military Drill' | 'Neon Circuit' | 'Acoustic Trail') => void;
+  voiceSelection: "Aria" | "Marcus" | "Nova";
+  setVoiceSelection: (val: "Aria" | "Marcus" | "Nova") => void;
+  hapticFeedback: "Off" | "Low" | "High";
+  setHapticFeedback: (val: "Off" | "Low" | "High") => void;
+  units: "Metric (km)" | "Imperial (mi)";
+  setUnits: (val: "Metric (km)" | "Imperial (mi)") => void;
+  theme: "Kinetic Dark" | "Onyx Black" | "Pro Grey";
+  setTheme: (val: "Kinetic Dark" | "Onyx Black" | "Pro Grey") => void;
+  musicTheme: "Military Drill" | "Neon Circuit" | "Acoustic Trail";
+  setMusicTheme: (
+    val: "Military Drill" | "Neon Circuit" | "Acoustic Trail",
+  ) => void;
   autoSave: boolean;
   setAutoSave: (val: boolean) => void;
 
@@ -61,9 +63,13 @@ type WorkoutContextType = {
   musicDuration: number;
   setMusicDuration: (val: number) => void;
 
+  // Background Audio (Keep Alive)
+  isWorkoutActive: boolean;
+  setIsWorkoutActive: (val: boolean) => void;
+
   // History
   history: WorkoutSession[];
-  addSession: (session: Omit<WorkoutSession, 'id' | 'date'>) => void;
+  addSession: (session: Omit<WorkoutSession, "id" | "date">) => void;
   clearHistory: () => void;
 };
 
@@ -79,13 +85,23 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   const [warmupBPM, setWarmupBPM] = useState(100);
   const [moderateBPM, setModerateBPM] = useState(125);
   const [fastBPM, setFastBPM] = useState(145);
-  
+
   const [voiceVolume, setVoiceVolume] = useState(80);
-  const [voiceSelection, setVoiceSelection] = useState<'Aria' | 'Marcus' | 'Nova'>('Aria');
-  const [hapticFeedback, setHapticFeedback] = useState<'Off' | 'Low' | 'High'>('High');
-  const [units, setUnits] = useState<'Metric (km)' | 'Imperial (mi)'>('Metric (km)');
-  const [theme, setTheme] = useState<'Kinetic Dark' | 'Onyx Black' | 'Pro Grey'>('Kinetic Dark');
-  const [musicTheme, setMusicTheme] = useState<'Military Drill' | 'Neon Circuit' | 'Acoustic Trail'>('Military Drill');
+  const [voiceSelection, setVoiceSelection] = useState<
+    "Aria" | "Marcus" | "Nova"
+  >("Aria");
+  const [hapticFeedback, setHapticFeedback] = useState<"Off" | "Low" | "High">(
+    "High",
+  );
+  const [units, setUnits] = useState<"Metric (km)" | "Imperial (mi)">(
+    "Metric (km)",
+  );
+  const [theme, setTheme] = useState<
+    "Kinetic Dark" | "Onyx Black" | "Pro Grey"
+  >("Kinetic Dark");
+  const [musicTheme, setMusicTheme] = useState<
+    "Military Drill" | "Neon Circuit" | "Acoustic Trail"
+  >("Military Drill");
   const [autoSave, setAutoSave] = useState(true);
 
   // Music Player State
@@ -94,13 +110,16 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   const [musicCurrentTime, setMusicCurrentTime] = useState(0);
   const [musicDuration, setMusicDuration] = useState(0);
 
+  // Background Audio (Keep Alive)
+  const [isWorkoutActive, setIsWorkoutActive] = useState(false);
+
   const [history, setHistory] = useState<WorkoutSession[]>([]);
 
   const getTotalTime = () => {
-    return warmUp + ((moderatePace + fastBurst) * cycles) + coolDown;
+    return warmUp + (moderatePace + fastBurst) * cycles + coolDown;
   };
 
-  const addSession = (sessionData: Omit<WorkoutSession, 'id' | 'date'>) => {
+  const addSession = (sessionData: Omit<WorkoutSession, "id" | "date">) => {
     const newSession: WorkoutSession = {
       ...sessionData,
       id: Math.random().toString(36).substring(2, 9),
@@ -116,24 +135,50 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <WorkoutContext.Provider
       value={{
-        warmUp, moderatePace, fastBurst, coolDown, cycles,
-        setWarmUp, setModeratePace, setFastBurst, setCoolDown, setCycles,
+        warmUp,
+        moderatePace,
+        fastBurst,
+        coolDown,
+        cycles,
+        setWarmUp,
+        setModeratePace,
+        setFastBurst,
+        setCoolDown,
+        setCycles,
         getTotalTime,
-        warmupBPM, setWarmupBPM,
-        moderateBPM, setModerateBPM,
-        fastBPM, setFastBPM,
-        voiceVolume, setVoiceVolume,
-        voiceSelection, setVoiceSelection,
-        hapticFeedback, setHapticFeedback,
-        units, setUnits,
-        theme, setTheme,
-        musicTheme, setMusicTheme,
-        autoSave, setAutoSave,
-        musicIsPlaying, setMusicIsPlaying,
-        currentTrackIndex, setCurrentTrackIndex,
-        musicCurrentTime, setMusicCurrentTime,
-        musicDuration, setMusicDuration,
-        history, addSession, clearHistory,
+        warmupBPM,
+        setWarmupBPM,
+        moderateBPM,
+        setModerateBPM,
+        fastBPM,
+        setFastBPM,
+        voiceVolume,
+        setVoiceVolume,
+        voiceSelection,
+        setVoiceSelection,
+        hapticFeedback,
+        setHapticFeedback,
+        units,
+        setUnits,
+        theme,
+        setTheme,
+        musicTheme,
+        setMusicTheme,
+        autoSave,
+        setAutoSave,
+        musicIsPlaying,
+        setMusicIsPlaying,
+        currentTrackIndex,
+        setCurrentTrackIndex,
+        musicCurrentTime,
+        setMusicCurrentTime,
+        musicDuration,
+        setMusicDuration,
+        isWorkoutActive,
+        setIsWorkoutActive,
+        history,
+        addSession,
+        clearHistory,
       }}
     >
       {children}
@@ -144,7 +189,7 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
 export function useWorkout() {
   const context = useContext(WorkoutContext);
   if (context === undefined) {
-    throw new Error('useWorkout must be used within a WorkoutProvider');
+    throw new Error("useWorkout must be used within a WorkoutProvider");
   }
   return context;
 }
