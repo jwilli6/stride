@@ -76,15 +76,15 @@ type WorkoutContextType = {
 const WorkoutContext = createContext<WorkoutContextType | undefined>(undefined);
 
 export function WorkoutProvider({ children }: { children: React.ReactNode }) {
-  const [warmUp, setWarmUp] = useState(2.5);
-  const [moderatePace, setModeratePace] = useState(4);
-  const [fastBurst, setFastBurst] = useState(2);
-  const [coolDown, setCoolDown] = useState(2.5);
+  const [warmUp, setWarmUp] = useState(0.5);
+  const [moderatePace, setModeratePace] = useState(1);
+  const [fastBurst, setFastBurst] = useState(1);
+  const [coolDown, setCoolDown] = useState(0.5);
   const [cycles, setCycles] = useState(6);
 
-  const [warmupBPM, setWarmupBPM] = useState(100);
-  const [moderateBPM, setModerateBPM] = useState(125);
-  const [fastBPM, setFastBPM] = useState(145);
+  const [warmupBPM, setWarmupBPM] = useState(80);
+  const [moderateBPM, setModerateBPM] = useState(110);
+  const [fastBPM, setFastBPM] = useState(125);
 
   const [voiceVolume, setVoiceVolume] = useState(80);
   const [voiceSelection, setVoiceSelection] = useState<
