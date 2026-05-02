@@ -97,6 +97,8 @@ export default function LiveSessionScreen() {
   // Refs for accessing current values in timer callback without causing re-renders
   const currentPhaseIndexRef = useRef(currentPhaseIndex);
   const phasesRef = useRef(phases);
+  const timeLeftRef = useRef(timeLeft);
+  const totalElapsedRef = useRef(totalElapsed);
 
   // Keep refs up to date
   useEffect(() => {
@@ -106,6 +108,14 @@ export default function LiveSessionScreen() {
   useEffect(() => {
     phasesRef.current = phases;
   }, [phases]);
+
+  useEffect(() => {
+    timeLeftRef.current = timeLeft;
+  }, [timeLeft]);
+
+  useEffect(() => {
+    totalElapsedRef.current = totalElapsed;
+  }, [totalElapsed]);
 
   const currentPhase = phases[currentPhaseIndex] || null;
   const isFinished = currentPhaseIndex >= phases.length;
@@ -192,45 +202,60 @@ export default function LiveSessionScreen() {
     if (!isRunning || isFinished) return;
 
     const interval = setInterval(() => {
-      setTotalElapsed((prev) => prev + 1);
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          const nextIndex = currentPhaseIndexRef.current + 1;
-          const currentPhases = phasesRef.current;
-          if (nextIndex < currentPhases.length) {
-            setCurrentPhaseIndex(nextIndex);
-            lastAnnouncedTime.current = null;
+      const nextElapsed = totalElapsedRef.current + 1;
+      setTotalElapsed(nextElapsed);
 
-            announceInterval(currentPhases[nextIndex]);
-            return currentPhases[nextIndex].duration;
-          } else {
-            setCurrentPhaseIndex(nextIndex);
-            // Finished - deactivate background audio
-            setIsWorkoutActive(false);
-            speak("Workout complete. Incredible effort today.");
-            setTotalElapsed((currentElapsed) => {
-              addSession({
-                totalDuration: currentElapsed + 1,
-                warmupTime: warmUp,
-                moderatePace,
-                fastBurst,
-                cycles,
-                warmupBPM,
-                moderateBPM,
-                fastBPM,
-                voiceVolume,
-                voiceSelection,
-              });
-              return currentElapsed + 1;
-            });
-            return 0;
-          }
+      const newTimeLeft = timeLeftRef.current - 1;
+
+      if (newTimeLeft <= 0) {
+        const nextIndex = currentPhaseIndexRef.current + 1;
+        const currentPhases = phasesRef.current;
+        if (nextIndex < currentPhases.length) {
+          setCurrentPhaseIndex(nextIndex);
+          lastAnnouncedTime.current = null;
+
+          announceInterval(currentPhases[nextIndex]);
+          setTimeLeft(currentPhases[nextIndex].duration);
+        } else {
+          setCurrentPhaseIndex(nextIndex);
+          // Finished - deactivate background audio
+          setIsWorkoutActive(false);
+          speak("Workout complete. Incredible effort today.");
+          
+          addSession({
+            totalDuration: nextElapsed,
+            warmupTime: warmUp,
+            moderatePace,
+            fastBurst,
+            cycles,
+            warmupBPM,
+            moderateBPM,
+            fastBPM,
+            voiceVolume,
+            voiceSelection,
+          });
+          
+          setTimeLeft(0);
         }
-        return prev - 1;
-      });
+      } else {
+        setTimeLeft(newTimeLeft);
+      }
     }, 1000);
+    
     return () => clearInterval(interval);
-  }, [isRunning, isFinished]);
+  }, [
+    isRunning, 
+    isFinished, 
+    warmUp, 
+    moderatePace, 
+    fastBurst, 
+    cycles, 
+    warmupBPM, 
+    moderateBPM, 
+    fastBPM, 
+    voiceVolume, 
+    voiceSelection
+  ]);
 
   // Update music track when phase changes (separate from timer to avoid render conflicts)
   useEffect(() => {

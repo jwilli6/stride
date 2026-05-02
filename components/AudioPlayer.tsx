@@ -1,5 +1,5 @@
 import { useWorkout } from "@/context/WorkoutContext";
-import { Audio } from "expo-av";
+import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export const MUSIC_TRACKS = {
@@ -132,14 +132,6 @@ export default function AudioPlayer() {
     fastBPM,
   } = useWorkout();
 
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const soundRef = useRef<Audio.Sound | null>(null);
-  const preloadedSoundRef = useRef<Audio.Sound | null>(null); // For instant track switching
-  const isPlayingRef = useRef(musicIsPlaying);
-  const trackIndexRef = useRef(currentTrackIndex);
-  const themeRef = useRef(musicTheme);
-
   const tracks = useMemo(() => MUSIC_TRACKS[musicTheme], [musicTheme]);
   const currentTrack = tracks[currentTrackIndex] || tracks[0];
   const nextTrack = tracks[(currentTrackIndex + 1) % tracks.length]; // Next track for pre-loading
@@ -159,14 +151,10 @@ export default function AudioPlayer() {
   useEffect(() => {
     const setupAudio = async () => {
       try {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          staysActiveInBackground: true,
-          interruptionModeIOS: 1, // DoNotMix
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          interruptionModeAndroid: 1, // DoNotMix
-          playThroughEarpieceAndroid: false,
+        await setAudioModeAsync({
+          shouldPlayInBackground: true,
+          playsInSilentMode: true,
+          interruptionModeAndroid: 'duckOthers',
         });
       } catch (error) {
         console.warn("Failed to setup audio session:", error);
@@ -176,163 +164,52 @@ export default function AudioPlayer() {
     setupAudio();
   }, []);
 
-  // Update refs when state changes
-  useEffect(() => {
-    isPlayingRef.current = musicIsPlaying;
-  }, [musicIsPlaying]);
+  const player = useAudioPlayer(currentTrack.source, {
+    updateInterval: 500,
+  });
 
-  useEffect(() => {
-    trackIndexRef.current = currentTrackIndex;
-  }, [currentTrackIndex]);
-
-  useEffect(() => {
-    themeRef.current = musicTheme;
-  }, [musicTheme]);
+  // Pre-load next track
+  const nextPlayer = useAudioPlayer(nextTrack.source, {
+    updateInterval: 1000,
+  });
 
   // Handle playback rate changes
   useEffect(() => {
-    const updatePlaybackRate = async () => {
-      if (soundRef.current) {
-        try {
-          await soundRef.current.setRateAsync(playbackRate, true);
-        } catch (error) {
-          console.warn("Failed to set playback rate:", error);
-        }
-      }
-    };
-
-    updatePlaybackRate();
-  }, [playbackRate]);
+    if (player) {
+      player.setPlaybackRate(playbackRate, 'high');
+    }
+  }, [playbackRate, player]);
 
   // Main sound loading and management effect
   useEffect(() => {
-    let isMounted = true;
+    if (!player) return;
+    
+    // Set up status update listener
+    const listener = player.addListener('playbackStatusUpdate', (status) => {
+      setMusicCurrentTime(status.currentTime * 1000 || 0);
+      setMusicDuration(status.duration * 1000 || 0);
 
-    const loadSound = async () => {
-      if (isLoading) return;
-      setIsLoading(true);
-
-      try {
-        // Cleanup existing sound
-        if (soundRef.current) {
-          await soundRef.current.unloadAsync();
-          soundRef.current = null;
-          setSound(null);
-        }
-
-        // Small delay for cleanup
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        if (!isMounted) return;
-
-        // Load new sound
-        const { sound: newSound, status } = await Audio.Sound.createAsync(
-          currentTrack.source,
-          {
-            shouldPlay: false,
-            rate: playbackRate,
-            shouldCorrectPitch: true,
-            volume: 1.0,
-            isLooping: false,
-          },
-        );
-
-        if (!isMounted) {
-          await newSound.unloadAsync();
-          return;
-        }
-
-        soundRef.current = newSound;
-        setSound(newSound);
-
-        // Set up status update listener
-        newSound.setOnPlaybackStatusUpdate((status) => {
-          if (!isMounted || !status.isLoaded) return;
-
-          setMusicCurrentTime(status.positionMillis || 0);
-          setMusicDuration(status.durationMillis || 0);
-
-          // Handle track completion
-          if (status.didJustFinish) {
-            setCurrentTrackIndex((prev) => (prev + 1) % tracks.length);
-          }
-        });
-
-        // Apply current play state
-        if (isPlayingRef.current) {
-          await newSound.playAsync();
-        }
-      } catch (error) {
-        console.warn("Failed to load sound:", error);
-      } finally {
-        setIsLoading(false);
+      // Handle track completion
+      if (status.didJustFinish) {
+        setCurrentTrackIndex((prev) => (prev + 1) % tracks.length);
       }
-    };
-
-    loadSound();
+    });
 
     return () => {
-      isMounted = false;
+      listener.remove();
     };
-  }, [currentTrackIndex, musicTheme]);
+  }, [player, tracks.length, setCurrentTrackIndex, setMusicCurrentTime, setMusicDuration]);
 
   // Handle play/pause state changes
   useEffect(() => {
-    const handlePlayPause = async () => {
-      if (!soundRef.current || isLoading) return;
+    if (!player || !player.isLoaded) return;
 
-      try {
-        const status = await soundRef.current.getStatusAsync();
-        if (!status.isLoaded) return;
-
-        if (musicIsPlaying && !status.isPlaying) {
-          await soundRef.current.playAsync();
-        } else if (!musicIsPlaying && status.isPlaying) {
-          await soundRef.current.pauseAsync();
-        }
-      } catch (error) {
-        console.warn("Failed to handle play/pause:", error);
-      }
-    };
-
-    handlePlayPause();
-  }, [musicIsPlaying, isLoading]);
-
-  // Pre-load next track for instant switching
-  useEffect(() => {
-    const preloadNextTrack = async () => {
-      try {
-        // Clean up previous preloaded sound
-        if (preloadedSoundRef.current) {
-          await preloadedSoundRef.current.unloadAsync();
-          preloadedSoundRef.current = null;
-        }
-
-        // Pre-load next track
-        const { sound: preloadedSound } = await Audio.Sound.createAsync(
-          nextTrack.source,
-          { shouldPlay: false },
-        );
-        preloadedSoundRef.current = preloadedSound;
-      } catch (error) {
-        console.warn("Failed to preload next track:", error);
-      }
-    };
-
-    preloadNextTrack();
-  }, [nextTrack]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (soundRef.current) {
-        soundRef.current.unloadAsync().catch(console.warn);
-      }
-      if (preloadedSoundRef.current) {
-        preloadedSoundRef.current.unloadAsync().catch(console.warn);
-      }
-    };
-  }, []);
+    if (musicIsPlaying && !player.playing) {
+      player.play();
+    } else if (!musicIsPlaying && player.playing) {
+      player.pause();
+    }
+  }, [musicIsPlaying, player, player?.isLoaded]);
 
   return null; // Invisible component managing global audio
 }

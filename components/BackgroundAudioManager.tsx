@@ -1,5 +1,5 @@
-import { Audio } from "expo-av";
-import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
+import { AudioPlayer, createAudioPlayer, setAudioModeAsync } from "expo-audio";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { useEffect, useRef, useState } from "react";
 
 interface BackgroundAudioManagerProps {
@@ -9,7 +9,7 @@ interface BackgroundAudioManagerProps {
 export default function BackgroundAudioManager({
   isActive,
 }: BackgroundAudioManagerProps) {
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [sound, setSound] = useState<AudioPlayer | null>(null);
   const isActiveRef = useRef(isActive);
 
   useEffect(() => {
@@ -22,33 +22,29 @@ export default function BackgroundAudioManager({
     const setupBackgroundAudio = async () => {
       try {
         // Configure audio session for background playback
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          staysActiveInBackground: true,
-          playsInSilentModeIOS: true,
-          shouldDuckAndroid: true,
-          playThroughEarpieceAndroid: false,
+        await setAudioModeAsync({
+          shouldPlayInBackground: true,
+          playsInSilentMode: true,
+          interruptionModeAndroid: 'duckOthers',
         });
 
         if (isActive && isMounted) {
           // Activate keep-awake as additional protection
-          activateKeepAwake("workout-session");
+          activateKeepAwakeAsync("workout-session");
 
           // Load and play silent audio loop
-          const { sound: newSound } = await Audio.Sound.createAsync(
+          const newPlayer = createAudioPlayer(
             require("../assets/audio/silent_loop.wav"),
-            {
-              shouldPlay: true,
-              isLooping: true,
-              volume: 0.01, // Very low volume but not completely silent
-            },
           );
+          newPlayer.loop = true;
+          newPlayer.volume = 0.01; // Very low volume but not completely silent
+          newPlayer.play();
 
           if (isMounted) {
-            setSound(newSound);
+            setSound(newPlayer);
           } else {
             // Component was unmounted before sound finished loading
-            newSound.unloadAsync();
+            newPlayer.remove();
           }
         }
       } catch (error) {
@@ -62,8 +58,8 @@ export default function BackgroundAudioManager({
 
       if (sound) {
         try {
-          await sound.stopAsync();
-          await sound.unloadAsync();
+          sound.pause();
+          sound.remove();
         } catch (error) {
           console.warn("Failed to cleanup background audio:", error);
         }
@@ -83,10 +79,12 @@ export default function BackgroundAudioManager({
       isMounted = false;
       deactivateKeepAwake("workout-session");
       if (sound) {
-        sound
-          .stopAsync()
-          .then(() => sound.unloadAsync())
-          .catch(console.warn);
+        try {
+          sound.pause();
+          sound.remove();
+        } catch (e) {
+          console.warn(e);
+        }
       }
     };
   }, [isActive]);
@@ -96,10 +94,12 @@ export default function BackgroundAudioManager({
     return () => {
       deactivateKeepAwake("workout-session");
       if (sound) {
-        sound
-          .stopAsync()
-          .then(() => sound.unloadAsync())
-          .catch(console.warn);
+        try {
+          sound.pause();
+          sound.remove();
+        } catch (e) {
+          console.warn(e);
+        }
       }
     };
   }, []);
