@@ -45,7 +45,8 @@
     "plugins": [
       "expo-router",
       "expo-audio",
-      "expo-asset"
+      "expo-asset",
+      "expo-image-picker"
     ],
     "experiments": {
       "typedRoutes": true
