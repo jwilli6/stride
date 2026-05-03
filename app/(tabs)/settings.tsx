@@ -1,6 +1,6 @@
 import { useWorkout } from "@/context/WorkoutContext";
 import Slider from "@react-native-community/slider";
-import * as FileSystem from "expo-file-system";
+import { File, Paths } from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import React from "react";
@@ -108,16 +108,12 @@ export default function SettingsScreen() {
         // Create a permanent copy in the app's document directory
         const fileExtension = selectedImage.uri.split(".").pop() || "jpg";
         const fileName = `avatar_${Date.now()}.${fileExtension}`;
-        const documentDir = "/tmp/"; // Fallback for web
-        const newPath = `${documentDir}${fileName}`;
-
-        await FileSystem.copyAsync({
-          from: selectedImage.uri,
-          to: newPath,
-        });
+        const sourceFile = new File(selectedImage.uri);
+        const destFile = new File(Paths.document, fileName);
+        sourceFile.copy(destFile);
 
         // Update the avatar URI in context
-        setAvatarUri(newPath);
+        setAvatarUri(destFile.uri);
       }
     } catch (error) {
       console.warn("Failed to upload avatar:", error);
