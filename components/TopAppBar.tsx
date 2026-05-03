@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { useWorkout } from "@/context/WorkoutContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export function TopAppBar({ title = "STRIDE" }) {
+  const { avatarUri } = useWorkout();
   return (
     <View className="absolute top-0 w-full z-50 bg-[#0d0e10] flex-row justify-between items-center px-6 py-4 pt-12">
       <View className="flex-row items-center gap-3">
@@ -12,11 +14,14 @@ export function TopAppBar({ title = "STRIDE" }) {
         </Text>
       </View>
       <TouchableOpacity className="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20 active:opacity-80">
-        {/* Placeholder image, should be replaced with the downloaded avatar */}
-        <Image 
-            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlCCLOIO2EtEXEYha-QKskE1y3k9j5QCjYx0es52YaurG1Glc_BIif-oKdY-_uGXkAXeXmTuKE2GPHk19J9VE_WR-IA2UV-HnCjS4qzZunrhgmeTGgxUNeJP7faRrfbkyEpY-aC_wLaHjjpzGQzAOXPU1hB2VdvFDI0_hdr0lTx824Nnq0irRu3jpS_gNycWPJOK50UH5hdJwygYiWC3a2eXqi32daRsVJhmrVAXr2n2BO4tJFdIyR8Whpmgv4CjXn48nA3aF8jeg' }}
-            className="w-full h-full"
-            resizeMode="cover"
+        <Image
+          source={
+            avatarUri
+              ? { uri: avatarUri }
+              : require("../assets/images/image_0a21f247.jpg")
+          }
+          className="w-full h-full"
+          resizeMode="cover"
         />
       </TouchableOpacity>
     </View>

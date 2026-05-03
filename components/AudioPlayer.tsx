@@ -1,5 +1,5 @@
 import { useWorkout } from "@/context/WorkoutContext";
-import { setAudioModeAsync, useAudioPlayer } from "expo-audio";
+import { useAudioPlayer, setAudioModeAsync } from "expo-audio";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export const MUSIC_TRACKS = {
@@ -185,7 +185,7 @@ export default function AudioPlayer() {
     if (!player) return;
     
     // Set up status update listener
-    const listener = player.addListener('playbackStatusUpdate', (status) => {
+    const listener = player.addListener('playbackStatusUpdate', (status: any) => {
       setMusicCurrentTime(status.currentTime * 1000 || 0);
       setMusicDuration(status.duration * 1000 || 0);
 

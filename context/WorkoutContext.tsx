@@ -53,6 +53,10 @@ type WorkoutContextType = {
   autoSave: boolean;
   setAutoSave: (val: boolean) => void;
 
+  // User Profile
+  avatarUri: string | null;
+  setAvatarUri: (val: string | null) => void;
+
   // Music Player State
   musicIsPlaying: boolean;
   setMusicIsPlaying: (val: boolean) => void;
@@ -103,6 +107,9 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
     "Military Drill" | "Neon Circuit" | "Acoustic Trail"
   >("Military Drill");
   const [autoSave, setAutoSave] = useState(true);
+
+  // User Profile State
+  const [avatarUri, setAvatarUri] = useState<string | null>(null);
 
   // Music Player State
   const [musicIsPlaying, setMusicIsPlaying] = useState(false);
@@ -166,6 +173,10 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
         setMusicTheme,
         autoSave,
         setAutoSave,
+
+        // User Profile
+        avatarUri,
+        setAvatarUri,
         musicIsPlaying,
         setMusicIsPlaying,
         currentTrackIndex,

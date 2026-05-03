@@ -1,7 +1,16 @@
 import { useWorkout } from "@/context/WorkoutContext";
 import Slider from "@react-native-community/slider";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 import React from "react";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
@@ -20,6 +29,8 @@ export default function SettingsScreen() {
     setMusicTheme,
     autoSave,
     setAutoSave,
+    avatarUri,
+    setAvatarUri,
     clearHistory,
   } = useWorkout();
 
@@ -69,6 +80,68 @@ export default function SettingsScreen() {
     );
   };
 
+  const handleAvatarUpload = async () => {
+    try {
+      // Request permissions
+      const permissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permissionResult.granted) {
+        Alert.alert(
+          "Permission Required",
+          "Permission to access photo library is required to upload an avatar image.",
+        );
+        return;
+      }
+
+      // Launch image picker
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1], // Square aspect ratio
+        quality: 0.7,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        const selectedImage = result.assets[0];
+
+        // Create a permanent copy in the app's document directory
+        const fileExtension = selectedImage.uri.split(".").pop() || "jpg";
+        const fileName = `avatar_${Date.now()}.${fileExtension}`;
+        const documentDir = '/tmp/'; // Fallback for web
+        const newPath = `${documentDir}${fileName}`;
+
+        await FileSystem.copyAsync({
+          from: selectedImage.uri,
+          to: newPath,
+        });
+
+        // Update the avatar URI in context
+        setAvatarUri(newPath);
+      }
+    } catch (error) {
+      console.warn("Failed to upload avatar:", error);
+      Alert.alert("Error", "Failed to upload avatar image. Please try again.");
+    }
+  };
+
+  const removeAvatar = () => {
+    Alert.alert(
+      "Remove Avatar",
+      "Are you sure you want to remove your profile picture?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Remove",
+          style: "destructive",
+          onPress: () => {
+            setAvatarUri(null);
+          },
+        },
+      ],
+    );
+  };
+
   const SettingItem = ({
     label,
     value,
@@ -108,6 +181,55 @@ export default function SettingsScreen() {
               Settings
             </Text>
           </Text>
+        </View>
+
+        {/* Profile Section */}
+        <View className="mb-8">
+          <Text className="text-primary font-lexendExtraBold uppercase tracking-widest text-[10px] mb-4">
+            Profile
+          </Text>
+
+          <View className="bg-[#1e202280] p-5 rounded-2xl border border-[#ffffff0d] mb-4">
+            <Text className="font-lexendBold uppercase tracking-widest text-xs text-on-surface-variant mb-4">
+              Profile Picture
+            </Text>
+
+            <View className="flex-row items-center gap-4">
+              <View className="w-16 h-16 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
+                <Image
+                  source={
+                    avatarUri
+                      ? { uri: avatarUri }
+                      : require("../../assets/images/image_0a21f247.jpg")
+                  }
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              </View>
+
+              <View className="flex-1 gap-2">
+                <TouchableOpacity
+                  onPress={handleAvatarUpload}
+                  className="bg-primary py-3 rounded-xl items-center justify-center"
+                >
+                  <Text className="font-lexendBold text-[10px] uppercase tracking-widest text-on-primary">
+                    Upload New
+                  </Text>
+                </TouchableOpacity>
+
+                {avatarUri && (
+                  <TouchableOpacity
+                    onPress={removeAvatar}
+                    className="bg-surface-high py-3 rounded-xl items-center justify-center border border-outline-variant/20"
+                  >
+                    <Text className="font-lexendBold text-[10px] uppercase tracking-widest text-on-surface-variant">
+                      Remove
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          </View>
         </View>
 
         {/* Voice Feedback Section */}
