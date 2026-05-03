@@ -1,7 +1,6 @@
 import { useWorkout } from "@/context/WorkoutContext";
 import Slider from "@react-native-community/slider";
 import * as FileSystem from "expo-file-system";
-import * as ImagePicker from "expo-image-picker";
 import React from "react";
 import {
   Alert,
@@ -82,9 +81,11 @@ export default function SettingsScreen() {
 
   const handleAvatarUpload = async () => {
     try {
+      const { requestMediaLibraryPermissionsAsync, launchImageLibraryAsync } = await import("expo-image-picker");
+      
       // Request permissions
       const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        await requestMediaLibraryPermissionsAsync();
 
       if (!permissionResult.granted) {
         Alert.alert(
@@ -95,7 +96,7 @@ export default function SettingsScreen() {
       }
 
       // Launch image picker
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const result = await launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsEditing: true,
         aspect: [1, 1], // Square aspect ratio
