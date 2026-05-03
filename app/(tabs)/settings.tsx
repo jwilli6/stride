@@ -1,6 +1,8 @@
 import { useWorkout } from "@/context/WorkoutContext";
 import Slider from "@react-native-community/slider";
 import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
 import React from "react";
 import {
   Alert,
@@ -81,11 +83,8 @@ export default function SettingsScreen() {
 
   const handleAvatarUpload = async () => {
     try {
-      const { requestMediaLibraryPermissionsAsync, launchImageLibraryAsync } = await import("expo-image-picker");
-      
       // Request permissions
-      const permissionResult =
-        await requestMediaLibraryPermissionsAsync();
+      const permissionResult = await MediaLibrary.requestPermissionsAsync();
 
       if (!permissionResult.granted) {
         Alert.alert(
@@ -96,8 +95,8 @@ export default function SettingsScreen() {
       }
 
       // Launch image picker
-      const result = await launchImageLibraryAsync({
-        mediaTypes: ['images'],
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
         allowsEditing: true,
         aspect: [1, 1], // Square aspect ratio
         quality: 0.7,
@@ -109,7 +108,7 @@ export default function SettingsScreen() {
         // Create a permanent copy in the app's document directory
         const fileExtension = selectedImage.uri.split(".").pop() || "jpg";
         const fileName = `avatar_${Date.now()}.${fileExtension}`;
-        const documentDir = '/tmp/'; // Fallback for web
+        const documentDir = "/tmp/"; // Fallback for web
         const newPath = `${documentDir}${fileName}`;
 
         await FileSystem.copyAsync({
@@ -211,6 +210,7 @@ export default function SettingsScreen() {
               <View className="flex-1 gap-2">
                 <TouchableOpacity
                   onPress={handleAvatarUpload}
+                  // onPress={pickImageAsync}
                   className="bg-primary py-3 rounded-xl items-center justify-center"
                 >
                   <Text className="font-lexendBold text-[10px] uppercase tracking-widest text-on-primary">
