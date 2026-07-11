@@ -11,6 +11,12 @@
     "preview": {
       "distribution": "internal"
     },
+    "review": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
       "autoIncrement": true
     }
