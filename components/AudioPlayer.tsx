@@ -34,7 +34,7 @@ export const MUSIC_TRACKS = {
     {
       title: "Double Time",
       artist: "Special Ops",
-      source: require("../assets/music/ModerateWkPace-115-BPM.m4a"),
+      source: require("../assets/music/FastBurstWkPace-153-BPM.m4a"),
       cover:
         "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
       type: "fast",
@@ -72,7 +72,7 @@ export const MUSIC_TRACKS = {
     {
       title: "Overload",
       artist: "CPU Death",
-      source: require("../assets/music/ModerateWkPace-115-BPM.m4a"),
+      source: require("../assets/music/FastBurstWkPace-153-BPM.m4a"),
       cover:
         "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80",
       type: "fast",
@@ -110,7 +110,7 @@ export const MUSIC_TRACKS = {
     {
       title: "Sprint Peak",
       artist: "Velocity",
-      source: require("../assets/music/ModerateWkPace-115-BPM.m4a"),
+      source: require("../assets/music/FastBurstWkPace-153-BPM.m4a"),
       cover:
         "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
       type: "fast",
@@ -168,10 +168,7 @@ export default function AudioPlayer() {
     updateInterval: 500,
   });
 
-  // Pre-load next track
-  const nextPlayer = useAudioPlayer(nextTrack.source, {
-    updateInterval: 1000,
-  });
+
 
   // Enable looping so music plays continuously through all workout phases
   useEffect(() => {
@@ -218,14 +215,14 @@ export default function AudioPlayer() {
 
   // Handle play/pause state changes
   useEffect(() => {
-    if (!player || !player.isLoaded) return;
+    if (!player) return;
 
-    if (musicIsPlaying && !player.playing) {
+    if (musicIsPlaying) {
       player.play();
-    } else if (!musicIsPlaying && player.playing) {
+    } else {
       player.pause();
     }
-  }, [musicIsPlaying, player, player?.isLoaded]);
+  }, [musicIsPlaying, player]);
 
   return null; // Invisible component managing global audio
 }
