@@ -6,7 +6,13 @@ import { useFonts, Lexend_400Regular, Lexend_700Bold, Lexend_800ExtraBold, Lexen
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
+
+// Disable strict mode warning (often triggered internally by NativeWind v4 transitions)
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false,
+});
 
 import { useColorScheme } from '@/components/useColorScheme';
 
